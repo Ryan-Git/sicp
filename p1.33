@@ -1,0 +1,49 @@
+(define (smallest-divisor n)
+  (find-divisor n 2)
+)
+
+(define (find-divisor n test-divisor)
+  (cond ((> (square test-divisor) n) n)
+        ((divides? n test-divisor) test-divisor)
+        (else (find-divisor n (+ test-divisor 1)))
+  )
+)
+
+(define (divides? a b)
+  (= (remainder a b) 0)
+)
+
+(define (prime? n)
+  (= n (smallest-divisor n))
+)
+
+(define (filtered-accumulate predicate combiner null-value term a next b)
+
+  (define (predicated-next n)
+    (if (predicate n)
+        n
+        (predicated-next (next n))))
+
+  (define (iter a result)
+      (if (> a b)
+          result
+          (iter (predicated-next (next a)) (combiner (term a) result)))
+  )
+
+  (iter (predicated-next a) null-value)
+)
+
+(define (identical n) n)
+
+(define (add-one n) (+ n 1))
+
+(define (sum-of-primes a b)
+  (filtered-accumulate prime? + 0 identical a add-one b)
+)
+
+(define (product-of-coprime nn)
+  (define (valid? i)
+    (= 1 (gcd i nn))
+  )
+
+  (filtered-accumulate valid? * 1 identical 2 add-one (- nn 1)))

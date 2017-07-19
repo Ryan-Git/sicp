@@ -1,0 +1,6 @@
+(sqrt 1e50) 找不到合适的解，因为精度要求太高
+(sqrt 1e-50) 解错误，因为精度不够
+
+
+(define (good-enough? guess x)
+  (< (/ (abs (- (improve guess x) guess)) x) 0.001))

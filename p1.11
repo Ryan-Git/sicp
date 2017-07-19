@@ -1,0 +1,18 @@
+(define (f n)
+  (cond ((< n 3) n)
+        (else (+ (f (- n 1)) (* 2 (f (- n 2))) (* 3 (f (- n 3)))))))
+
+
+(define (f n)
+
+	(define (f-iter sum a b c n)
+	  (if (= n 0)
+	      sum
+	      (f-iter (+ a b b c c c) (+ a b b c c c) a b (- n 1))
+	  )
+	)
+  
+  (if (< n 3)
+      n
+      (f-iter 0 2 1 0 (- n 2)))
+)

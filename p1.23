@@ -1,0 +1,52 @@
+(define (smallest-divisor n)
+  (find-divisor n 2)
+)
+
+(define (find-divisor n test-divisor)
+	(define (next n)
+	  (if (= n 2)
+	      3
+	      (+ n 2)))
+  (cond ((> (square test-divisor) n) n)
+        ((divides? n test-divisor) test-divisor)
+        (else (find-divisor n (next test-divisor)))
+  )
+)
+
+(define (divides? a b)
+  (= (remainder a b) 0)
+)
+
+(define (prime? n)
+  (= n (smallest-divisor n))
+)
+
+(define (next-odd n)
+  (if (divides? n 2)
+      (+ n 1)
+      (+ n 2)
+  )
+)
+
+(define (find-primes n found count)
+  (if (< found count)
+ 	(if (prime? n)
+ 		(begin
+ 			(newline)
+ 			(display n)
+ 	    	(find-primes (next-odd n) (+ found 1) count)
+ 	    )
+ 	    (find-primes (next-odd n) found count)
+ 	)
+ )
+)
+
+(define (search-for-primes n)
+  (define (start-search start-time)
+  	(find-primes (next-odd (- n 1)) 0 3)
+  	(newline)
+  	(display (- (runtime) start-time))
+  )
+
+  (start-search (runtime))
+)
